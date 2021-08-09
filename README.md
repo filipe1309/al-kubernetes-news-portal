@@ -7,7 +7,7 @@
 
 ## 💬 About
 
-This project was developed following Alura's [[COURSE_NAME]]([COURSE_LINK]) course.
+This project was developed following Alura's [Kubernetes: Pods, Services e ConfigMaps](https://cursos.alura.com.br/course/kubernetes-pods-services-configmap) course.
 
 ## :computer: Technologies
 
@@ -32,7 +32,7 @@ cd al-kubernetes-1-news-portal
 ## :runner: Running
 
 ```sh
-docker-compose up
+kubectl apply -f news-portal.yaml
 ```
 
 > Access http://localhost:8000

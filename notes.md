@@ -57,6 +57,7 @@ curl 10.108.226.16:80
 kubectl exec -it news-portal -- bash
 curl 10.104.42.9:80
 kubectl get nodes -o wide
+kubectl apply -f svc-pod-1.yaml
 ```
 
 -> tail -1 /etc/resolv.conf | cut -d' ' -f2 # wsl host ip
@@ -65,3 +66,20 @@ kubectl get nodes -o wide
 
 -> minikube dashboard
 http://127.0.0.1:41795/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/overview?namespace=default
+
+## CLASS-5
+
+```sh
+kubectl delete pods --all
+kubectl delete svc --all
+```
+
+```sh
+kubectl apply -f .\news-portal.yaml
+kubectl apply -f .\svc-news-portal.yaml
+```
+
+```sh
+kubectl apply -f .\news-system.yaml
+kubectl apply -f .\svc-news-system.yaml
+```

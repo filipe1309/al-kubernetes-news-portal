@@ -32,10 +32,21 @@ cd al-kubernetes-1-news-portal
 ## :runner: Running
 
 ```sh
+# Start the Pods
 kubectl apply -f news-portal.yaml
+kubectl apply -f news-system.yaml
+kubectl apply -f news-db.yaml
 ```
 
-> Access http://localhost:8000
+```sh
+# Start the NodePort/ClusterIP services
+kubectl apply -f svc-news-portal.yaml
+kubectl apply -f svc-news-system.yaml
+kubectl apply -f svc-news-db.yaml
+```
+
+> Access News Portal: http://localhost:30000/
+> Access News System: http://localhost:30001/
 
 ## License
 

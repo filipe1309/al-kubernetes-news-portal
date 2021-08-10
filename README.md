@@ -7,11 +7,18 @@
 
 ## 💬 About
 
-This project was developed following Alura's [Kubernetes: Pods, Services e ConfigMaps](https://cursos.alura.com.br/course/kubernetes-pods-services-configmap) course.
+This project was developed following Alura's Kubernetes courses.
 
+Courses:
+
+- [Kubernetes: Pods, Services e ConfigMaps](https://cursos.alura.com.br/course/kubernetes-pods-services-configmap)
+- [Kubernetes: Deployments, Volumes e Escalabilidade](https://cursos.alura.com.br/course/kubernetes-deployments-volumes-escalabilidade)
+
+```
 [EXTERNAL] -> [CLUSTER]
 -> [SERVICE NodePort NEWS PORTAL] -> [POD NEWS PORTAL]
 -> [SERVICE NodePort NEWS SYSTEM] -> [POD NEWS SYSTEM] -> [SERVICE ClusterIP NEWS DB] -> [POD NEWS DB]
+```
 
 ## :computer: Technologies
 
@@ -26,11 +33,11 @@ This project was developed following Alura's [Kubernetes: Pods, Services e Confi
 ## :cd: Installation
 
 ```sh
-git clone git@github.com:filipe1309/al-kubernetes-1-news-portal.git
+git clone git@github.com:filipe1309/al-kubernetes-news-portal.git
 ```
 
 ```sh
-cd al-kubernetes-1-news-portal
+cd al-kubernetes-news-portal
 ```
 
 ## :runner: Running

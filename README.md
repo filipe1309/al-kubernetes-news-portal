@@ -9,6 +9,10 @@
 
 This project was developed following Alura's [Kubernetes: Pods, Services e ConfigMaps](https://cursos.alura.com.br/course/kubernetes-pods-services-configmap) course.
 
+[EXTERNAL] -> [CLUSTER]
+-> [SERVICE NodePort NEWS PORTAL] -> [POD NEWS PORTAL]
+-> [SERVICE NodePort NEWS SYSTEM] -> [POD NEWS SYSTEM] -> [SERVICE ClusterIP NEWS DB] -> [POD NEWS DB]
+
 ## :computer: Technologies
 
 - [Kubernetes](https://kubernetes.io/)
@@ -31,12 +35,16 @@ cd al-kubernetes-1-news-portal
 
 ## :runner: Running
 
+### Pods
+
 ```sh
 # Start the Pods
 kubectl apply -f news-portal.yaml
 kubectl apply -f news-system.yaml
 kubectl apply -f news-db.yaml
 ```
+
+### Services
 
 ```sh
 # Start the NodePort/ClusterIP services
@@ -45,8 +53,17 @@ kubectl apply -f svc-news-system.yaml
 kubectl apply -f svc-news-db.yaml
 ```
 
+### Config Maps
+
+```sh
+# Start ConfigMaps
+kubectl apply -f news-portal-configmap.yaml
+kubectl apply -f news-system-configmap.yaml
+kubectl apply -f news-db-configmap.yaml
+```
+
 > Access News Portal: http://localhost:30000/
-> Access News System: http://localhost:30001/
+> Access News System (admin/admin): http://localhost:30001/
 
 ## License
 

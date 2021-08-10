@@ -83,3 +83,38 @@ kubectl apply -f .\svc-news-portal.yaml
 kubectl apply -f .\news-system.yaml
 kubectl apply -f .\svc-news-system.yaml
 ```
+
+## CLASS-6
+
+```sh
+kubectl delete pod news-db
+kubectl apply -f .\news-db.yaml
+kubectl get pods
+kubectl exec -it news-db -- bash
+mysql -uroot -p
+show databases;
+use empresa;
+show tables;
+```
+
+### Config Map
+
+```sh
+kubectl apply -f .\news-db-configmap.yaml
+kubectl get configmap
+kubectl describe configmap news-db-configmap
+kubectl delete pod news-db
+kubectl apply -f .\news-db.yaml
+```
+
+```sh
+kubectl apply -f .\news-system-configmap.yaml
+kubectl delete pod news-system
+kubectl apply -f .\news-system.yaml
+```
+
+```sh
+kubectl apply -f .\news-portal-configmap.yaml
+kubectl delete pod news-portal
+kubectl apply -f .\news-portal.yaml
+```

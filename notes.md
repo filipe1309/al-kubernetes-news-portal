@@ -75,20 +75,20 @@ kubectl delete svc --all
 ```
 
 ```sh
-kubectl apply -f .\news-portal.yaml
-kubectl apply -f .\svc-news-portal.yaml
+kubectl apply -f news-portal.yaml
+kubectl apply -f svc-news-portal.yaml
 ```
 
 ```sh
-kubectl apply -f .\news-system.yaml
-kubectl apply -f .\svc-news-system.yaml
+kubectl apply -f news-system.yaml
+kubectl apply -f svc-news-system.yaml
 ```
 
 ## CLASS-6
 
 ```sh
 kubectl delete pod news-db
-kubectl apply -f .\news-db.yaml
+kubectl apply -f news-db.yaml
 kubectl get pods
 kubectl exec -it news-db -- bash
 mysql -uroot -p
@@ -100,21 +100,64 @@ show tables;
 ### Config Map
 
 ```sh
-kubectl apply -f .\news-db-configmap.yaml
+kubectl apply -f news-db-configmap.yaml
 kubectl get configmap
 kubectl describe configmap news-db-configmap
 kubectl delete pod news-db
-kubectl apply -f .\news-db.yaml
+kubectl apply -f news-db.yaml
 ```
 
 ```sh
-kubectl apply -f .\news-system-configmap.yaml
+kubectl apply -f news-system-configmap.yaml
 kubectl delete pod news-system
-kubectl apply -f .\news-system.yaml
+kubectl apply -f news-system.yaml
 ```
 
 ```sh
-kubectl apply -f .\news-portal-configmap.yaml
+kubectl apply -f news-portal-configmap.yaml
 kubectl delete pod news-portal
-kubectl apply -f .\news-portal.yaml
+kubectl apply -f news-portal.yaml
+```
+
+## COURSE-2
+
+## CLASS-1
+
+```sh
+kubectl apply -f news-portal-replicaset.yaml
+kubectl get pods
+kubectl get replicasets
+kubectl get rs --watch
+```
+
+```sh
+kubectl apply -f nginx-deployment.yaml
+kubectl get deployments
+kubectl rollout history deployment nginx-deployment
+kubectl apply -f nginx-deployment.yaml --record
+kubectl annotate deployment nginx-deployment kubernetes.io/change-cause="Set nginx with latest version"
+kubectl describe pod nginx-deployment-7d684cf94b-7qtb7
+kubectl rollout  undo deployment nginx-deployment --to-revision=2
+kubectl delete deployment nginx-deployment
+kubectl delete -f news-portal-replicaset.yaml
+```
+
+```sh
+kubectl apply -f news-portal-deployment.yaml
+kubectl rollout history deployment news-portal-deployment
+kubectl annotate deployment news-portal-deployment kubernetes.io/change-cause="Set news portal with version 1"
+```
+
+```sh
+kubectl delete pod news-system
+kubectl apply -f news-system-deployment.yaml
+kubectl rollout history deployment news-system-deployment
+kubectl annotate deployment news-system-deployment kubernetes.io/change-cause="Set news system with version 1"
+```
+
+```sh
+kubectl delete pod news-db
+kubectl apply -f news-db-deployment.yaml
+kubectl rollout history deployment news-db-deployment
+kubectl annotate deployment news-db-deployment kubernetes.io/change-cause="Set news db with version 1"
 ```

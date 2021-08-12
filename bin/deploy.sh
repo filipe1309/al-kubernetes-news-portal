@@ -2,6 +2,8 @@
 
 # DevOntheRun Deploy Script
 
+clear
+
 # Black        0;30     Dark Gray     1;30
 # Red          0;31     Light Red     1;31
 # Green        0;32     Light Green   1;32
@@ -17,7 +19,8 @@ DARK_GRAY='\033[1;30m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-VERSION=0.2.0
+VERSION=$(head -n 1 bin/version)
+
 
 echo -e "${BG_GREEN}"
 echo "#############################################"

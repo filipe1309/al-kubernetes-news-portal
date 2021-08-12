@@ -185,3 +185,5 @@ kubectl get pv
 kubectl apply -f gcp-persistent-volume-claim.yaml
 kubectl get pvc
 ```
+
+https://kubernetes.io/docs/concepts/storage/persistent-volumes/

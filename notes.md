@@ -161,3 +161,27 @@ kubectl apply -f news-db-deployment.yaml
 kubectl rollout history deployment news-db-deployment
 kubectl annotate deployment news-db-deployment kubernetes.io/change-cause="Set news db with version 1"
 ```
+
+## CLASS-2
+
+### Volume
+
+```sh
+kubectl delete pods,svc,deployments --all
+kubectl apply -f pod-volume.yaml
+kubectl exec -it pod-volume --container nginx-container -- bash
+cd first-volume
+touch first-volume-file.txt
+kubectl describe pod pod-volume.yaml
+```
+
+### Persistent Volume
+
+No GCP
+
+```sh
+kubectl apply -f gcp-persistent-volume.yaml
+kubectl get pv
+kubectl apply -f gcp-persistent-volume-claim.yaml
+kubectl get pvc
+```

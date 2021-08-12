@@ -65,6 +65,10 @@ echo "Next branch: $GIT_BRANCH_NEXT_CLASS_LW"
 
 echo "---------------------------------------------"
 
+#################
+### TAG
+#################
+
 if [[ $NEWEST_TAG != *$GIT_BRANCH* ]]; then
     # if arguments [ $# -eq 0 ]
     if [ $# -eq 0 ]; then
@@ -116,6 +120,11 @@ if [[ $NEWEST_TAG != *$GIT_BRANCH* ]]; then
     fi
 fi
 
+
+#################
+### BRANCH
+#################
+
 echo ""
 
 echo "🏁 Starting deploy process ..."
@@ -137,4 +146,3 @@ echo -e "${NO_BG}"
 confirm "Go to next class/episode? ($GIT_BRANCH_NEXT_CLASS_LW) [Y/n]" && git checkout -b $GIT_BRANCH_NEXT_CLASS_LW
 echo "## ${GIT_BRANCH_NEXT_CLASS^^}" >> notes.md
 echo "" >> notes.md
-

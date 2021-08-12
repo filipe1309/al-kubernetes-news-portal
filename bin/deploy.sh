@@ -1,4 +1,3 @@
-  
 #!/bin/bash
 
 # DevOntheRun Deploy Script
@@ -31,18 +30,21 @@ TAG_MSG=$2
 GIT_BRANCH=$(git branch --show-current)
 GIT_DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD' | cut -d':' -f2 | sed -e 's/^ *//g' -e 's/ *$//g')
 TAG_NAME=$GIT_BRANCH
-FAILED_MSG="ERROR"
+FAILED_MSG="ERROR (Delete last tag if it was created)"
 
 IFS='-' read -ra ADDR <<< "$GIT_BRANCH"
-CLASS_TYPE=${ADDR[0]}
+CLASS_TYPE="${ADDR[0]}-"
+
+if [[ ${ADDR[1]} == *"."* ]]; then
+    IFS='.' read -ra ADDR <<< "${ADDR[1]}"
+    CLASS_NUMBER="$CLASS_NUMBER ${ADDR[1]}"
+    CLASS_TYPE="${CLASS_TYPE}${ADDR[0]}."
+fi
 CLASS_NUMBER=${ADDR[1]}
 
-echo $CLASS_TYPE $CLASS_NUMBER
-GIT_BRANCH_NEXT_CLASS=$CLASS_TYPE-$(($CLASS_NUMBER + 1))
+GIT_BRANCH_NEXT_CLASS=$CLASS_TYPE$(($CLASS_NUMBER + 1))
 GIT_BRANCH_NEXT_CLASS_LW=${GIT_BRANCH_NEXT_CLASS,,}  # tolower
 GIT_BRANCH_NEXT_CLASS_UP=${GIT_BRANCH_NEXT_CLASS^^}  # toupper
-
-echo "---------------------------------------------"
 
 confirm() {
     read -r -p "${1:-Are you sure? [Y/n]} " response
@@ -54,8 +56,10 @@ confirm() {
     fi
 }
 
-
 echo "Branch to deploy: $GIT_BRANCH"
+echo "Next branch: $GIT_BRANCH_NEXT_CLASS_LW"
+
+echo "---------------------------------------------"
 
 
 # if arguments [ $# -eq 0 ]
@@ -82,7 +86,21 @@ if [ $# -eq 0 ]; then
             echo "Tag message missing"
             exit 0
         fi
-        git tag -a $TAG_NAME -m "$TAG_MSG"
+
+        echo "---------------------------------------------"
+        echo "Tag:    [name]= \"$TAG_NAME\" || [msg]= \"$TAG_MSG\""
+        echo "---------------------------------------------"
+
+        read -r -p "Are you sure? [Y/n] " response
+        response=${response,,} # tolower
+
+        if [[ $response =~ ^(yes|y| ) ]] || [[ -z $response ]]; then
+            git tag -a $TAG_NAME -m "$TAG_MSG"
+        else
+            echo "Bye =)"
+            exit 0
+        fi
+        echo "---------------------------------------------"
     fi
 else
     # Verify if param --tag-msg is set && message param is not empty
@@ -93,29 +111,20 @@ else
     git tag -a $TAG_NAME -m "$TAG_MSG"
 fi
 
-echo "---------------------------------------------"
-echo "Branch: \"$GIT_BRANCH\""
-echo "---------------------------------------------"
-echo "Tag:    [name]= \"$TAG_NAME\" || [msg]= \"$TAG_MSG\""
-echo "---------------------------------------------"
 
-read -r -p "Are you sure? [Y/n] " response
-response=${response,,} # tolower
-if [[ $response =~ ^(yes|y| ) ]] || [[ -z $response ]]; then
-    echo "---------------------------------------------"
-    echo "Deploying..."
-    git add notes.md && git commit -m "docs: update notes"
-    confirm "Checkout to \"$GIT_DEFAULT_BRANCH\" branch & Merge current branch ($GIT_BRANCH)? [Y/n]" && { git checkout $GIT_DEFAULT_BRANCH  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } } && { git pull  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } } && { git merge $GIT_BRANCH  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } }
-    confirm "Deploy on \"$GIT_DEFAULT_BRANCH\" branch? [Y/n]" && { git push origin $GIT_DEFAULT_BRANCH  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } } && { git push origin $GIT_DEFAULT_BRANCH --tags  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } }
-    
-    echo -e "${BG_GREEN}"
-    echo -e "\xE2\x9C\x94 DEPLOY COMPLETED"
-    echo -e "${NO_BG}"
+echo "🏁 Starting deploy process ..."
+echo "✔ Auto commiting notes ..."
+git add notes.md && git commit -m "docs: update notes"
 
-    confirm "Go to next class/episode? ($GIT_BRANCH_NEXT_CLASS_LW) [Y/n]" && git checkout -b $GIT_BRANCH_NEXT_CLASS_LW
-    echo "## ${GIT_BRANCH_NEXT_CLASS^^}" >> notes.md
-    echo "" >> notes.md
-else
-    echo "Bye =)"
-    exit 0
-fi
+confirm "Checkout to \"$GIT_DEFAULT_BRANCH\" branch & Merge current branch ($GIT_BRANCH)? [Y/n]" && { git checkout $GIT_DEFAULT_BRANCH  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } } && { git pull  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } } && { git merge $GIT_BRANCH  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } }
+
+confirm "Deploy on \"$GIT_DEFAULT_BRANCH\" branch? [Y/n]" && { git push origin $GIT_DEFAULT_BRANCH  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } } && { git push origin $GIT_DEFAULT_BRANCH --tags  || { echo -e "\u274c $FAILED_MSG" ; exit 1; } }
+
+echo -e "${BG_GREEN}"
+echo -e "\xE2\x9C\x94 DEPLOY COMPLETED"
+echo -e "${NO_BG}"
+
+confirm "Go to next class/episode? ($GIT_BRANCH_NEXT_CLASS_LW) [Y/n]" && git checkout -b $GIT_BRANCH_NEXT_CLASS_LW
+echo "## ${GIT_BRANCH_NEXT_CLASS^^}" >> notes.md
+echo "" >> notes.md
+

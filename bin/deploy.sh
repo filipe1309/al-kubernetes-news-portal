@@ -61,7 +61,6 @@ echo "Next branch: $GIT_BRANCH_NEXT_CLASS_LW"
 
 echo "---------------------------------------------"
 
-
 # if arguments [ $# -eq 0 ]
 if [ $# -eq 0 ]; then
     read -r -p "Do you want to tag? [Y/n] " response
@@ -111,6 +110,7 @@ else
     git tag -a $TAG_NAME -m "$TAG_MSG"
 fi
 
+echo ""
 
 echo "🏁 Starting deploy process ..."
 echo "✔ Auto commiting notes ..."

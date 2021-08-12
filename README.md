@@ -16,8 +16,8 @@ Courses:
 
 ```
 [EXTERNAL] -> [CLUSTER]
--> [SERVICE NodePort NEWS PORTAL] -> [POD NEWS PORTAL]
--> [SERVICE NodePort NEWS SYSTEM] -> [POD NEWS SYSTEM] -> [SERVICE ClusterIP NEWS DB] -> [POD NEWS DB]
+-> [SERVICE NodePort NEWS PORTAL] -> [DEPLOYMENT(3) NEWS PORTAL]
+-> [SERVICE NodePort NEWS SYSTEM] -> [DEPLOYMENT(1) NEWS SYSTEM] -> [SERVICE ClusterIP NEWS DB] -> [DEPLOYMENT(1) NEWS DB]
 ```
 
 ## :computer: Technologies
@@ -42,35 +42,30 @@ cd al-kubernetes-news-portal
 
 ## :runner: Running
 
-### Pods
+### Deployments
 
 ```sh
-# Start the Pods
-kubectl apply -f news-portal.yaml
-kubectl apply -f news-system.yaml
-kubectl apply -f news-db.yaml
+# Start the Deployments
+kubectl apply -f news-portal-deployment.yaml -f news-system-deployment.yaml -f news-db-deployment.yaml
 ```
 
 ### Services
 
 ```sh
 # Start the NodePort/ClusterIP services
-kubectl apply -f svc-news-portal.yaml
-kubectl apply -f svc-news-system.yaml
-kubectl apply -f svc-news-db.yaml
+kubectl apply -f svc-news-portal.yaml -f svc-news-system.yaml -f svc-news-db.yaml
 ```
 
 ### Config Maps
 
 ```sh
 # Start ConfigMaps
-kubectl apply -f news-portal-configmap.yaml
-kubectl apply -f news-system-configmap.yaml
-kubectl apply -f news-db-configmap.yaml
+kubectl apply -f news-portal-configmap.yaml -f news-system-configmap.yaml -f news-db-configmap.yaml
 ```
 
-> Access News Portal: http://localhost:30000/
-> Access News System (admin/admin): http://localhost:30001/
+> Access News Portal: http://localhost:30000/  
+> Access News System: http://localhost:30001/  
+> Login/Password: admin/admin
 
 ## License
 
